@@ -1,8 +1,6 @@
-# EXPRESS TEMPLATE
+# DecentralTube Main API
 [![Tests](https://github.com/MateoDi9z/express-template/actions/workflows/tests.yml/badge.svg)](https://github.com/MateoDi9z/express-template/actions/workflows/tests.yml)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/DecentralTube/dct-main-api/master/LICENSE)
-
-DecentralTube main API
 
 ## Features
 - Express.js API 
