@@ -1,5 +1,3 @@
-// ! TEST EXAMPLE ! //
-import "../src/moduleResolver"
 // import { expect } from "chai"
 import request from "supertest"
 
@@ -13,7 +11,7 @@ describe("> Server", () => {
     request(app).get("/").expect(200, done)
   })
 
-  it("\"/\" responds with 'Hello World!'", (done) => {
+  it("`/` responds with 'Hello World!'", (done) => {
     request(app).get("/").expect("Hello World!", done)
 
     //? SAME

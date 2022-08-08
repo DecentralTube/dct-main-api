@@ -6,5 +6,6 @@
   "bracketSameLine": false,
   "arrowParens": "always",
   "parser": "typescript",
-  "endOfLine": "crlf"
+  "endOfLine": "crlf",
+  "trailingComma": "none"
 }

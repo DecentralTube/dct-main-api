@@ -1,23 +1,39 @@
-# EXPRESS TEMPLATE
+# DecentralTube Main API
 [![Tests](https://github.com/MateoDi9z/express-template/actions/workflows/tests.yml/badge.svg)](https://github.com/MateoDi9z/express-template/actions/workflows/tests.yml)
-
-Project template with use-full pack of tools and ready-to-use test-driven development environment
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/DecentralTube/dct-main-api/master/LICENSE)
 
 ## Features
-- [x] Typescript
-- [x] Express.js
-- [x] Nodemon
-- [x] TTD (Test-driven development)
-- [x] GitHub Workflow
-- [x] ESLinter & Prettier
+- Express.js API 
+- Content Provider
+  - SQL DB (prisma)
+- Unit tested (Mocha & Chai)
+- Typescript
 
-[GitHub Repo](https://github.com/MateoDi9z/express-template)
+## Commands
 
-## Tutorial
-- [Episode 0 - Init](./how-to/%5B0%5D%20Init.md)
-- [Episode 1 - Typescript](./how-to/%5B1%5D%20Typescript.md)
-- [Episode 2 - Express](./how-to/%5B2%5D%20Express.md)
-- [Episode 3 - Nodemon](./how-to/%5B3%5D%20Nodemon.md)
-- [Episode 4 - Testing](./how-to/%5B4%5D%20Testing.md)
-- [Episode 5 - GitHub Workflows](./how-to/%5B5%5D%20Github%20Workflows.md)
-- [Episode 6 - Linter](./how-to/%5B6%5D%20Linter.md)
+Start development server
+```sh
+npm run start:dev
+```
+
+Run tests in /test dir
+```sh
+npm run test
+```
+
+Build project for production
+```sh
+npm run build
+```
+
+Start production server
+```sh
+npm run start:prod
+```
+
+[Git Repo](https://github.com/DecentralTube/decentraltube-api)
+
+See [CHANGELOG](./CHANGELOG.md)
+
+## License
+This project is released under the [MIT License](https://opensource.org/licenses/MIT)

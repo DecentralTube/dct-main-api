@@ -1,6 +1,6 @@
 {
   "spec": "test/**/*.spec.ts",
-  "require": ["ts-node/register"],
+  "require": ["ts-node/register", "../../../../src/moduleResolver"],
   "watchExtensions": "ts",
   "extension": "ts",
   "timeout": 3000

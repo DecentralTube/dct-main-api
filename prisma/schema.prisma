@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Migrate
+// npx prisma migrate dev --name=name
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  username  String   @unique
+  password  String
+  videos    Video[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([id, username])
+}
+
+model Video {
+  id             Int      @id @default(autoincrement())
+  title          String
+  video          String
+  authorUsername String
+  author         User     @relation(fields: [authorUsername], references: [username])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

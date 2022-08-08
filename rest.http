@@ -1,0 +1,31 @@
+# API ENDPOITS
+
+## USER ENDPOINTS
+
+### GET users
+GET http://127.0.0.1:3000/user
+
+### GET user
+GET http://127.0.0.1:3000/user/1
+
+### POST user
+POST http://127.0.0.1:3000/user
+Content-Type: application/json
+
+{
+  "name": "test",
+  "password": "test"
+}
+
+### DELETE user
+DELETE http://127.0.0.1:3000/user/54
+
+### EDIT user
+PUT http://127.0.0.1:3000/user/1
+Content-Type: application/json
+
+{
+  "name": "test",
+  "password": "test",
+  "username": "test"
+}
