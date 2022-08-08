@@ -12,6 +12,10 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
+
+    env:
+      DATABASE_URL: "file:./dev.db"
+
     steps:
     - uses: actions/checkout@v3
     - name: Run tests ${{ matrix.node-version }}
