@@ -34,6 +34,7 @@ npm run start:prod
 ```
 
 [Git Repo](https://github.com/DecentralTube/decentraltube-api)
+
 See [CHANGELOG](./CHANGELOG.md)
 
 ## License
