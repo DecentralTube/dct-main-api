@@ -10,7 +10,8 @@
     "rootDir": "src",
     "baseUrl": ".",
     "paths": { 
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@class/*": ["src/classes/*"]
     },
     "outDir": "build"
   }
