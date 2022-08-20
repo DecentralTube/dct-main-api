@@ -12,7 +12,8 @@ const router = Router()
 //* @access PRIVATE
 router.get("/", async (_req: Request, res: Response) => {
   const data = await prisma.user.findMany()
-  res.json(new Format(false, data))
+  const resa = new Format(false, data)
+  res.json(resa)
 })
 
 //* @route GET /user/:id
@@ -27,7 +28,7 @@ router.get("/:id", async (req: Request, res: Response) => {
     }
   })
 
-  res.json(data ? new Format(false, data) : new Format(true, null))
+  res.json(data ? new Format(false, [data]) : new Format(true, null))
 })
 
 //* @route POST /user
@@ -48,7 +49,7 @@ router.post("/", async (req: Request, res: Response) => {
     }
   })
 
-  res.json(new Format(false, user))
+  res.json(new Format(false, [user]))
 })
 
 //* @route DELETE /user
@@ -73,7 +74,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
     }
   })
 
-  res.json(new Format(false, user))
+  res.json(new Format(false, [user]))
 })
 
 //* @route PUT /user
@@ -100,7 +101,7 @@ router.put("/:id", async (req: Request, res: Response) => {
     data: updatedUser
   })
 
-  res.json(new Format(false, user))
+  res.json(new Format(false, [user]))
 })
 
 export default router

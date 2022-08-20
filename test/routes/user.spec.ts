@@ -40,6 +40,7 @@ describe("> USER route", () => {
     if (!data) {
       expect(response.error).to.be.true
       expect(response.status).equal(404 || 500)
+      expect(response.data).to.be.null
 
       if (response.status == 404) expect(response.msg).equal("not found")
       if (response.status == 500) expect(response.msg).equal("server error")
@@ -48,18 +49,32 @@ describe("> USER route", () => {
 
   //? GET unique
   it("`/user/:id` \t-> GET - responds with one user", async () => {
+    const created = await request(app)
+      .post("/user")
+      .set("Content-Type", "application/json")
+      .send({
+        name: String(Math.random()),
+        password: String(Math.random()),
+        username: String(Math.random())
+      })
+      .then((res) => res.body.data)
+      .catch((e) => {
+        throw new Error(e)
+      })
     const response = await request(app)
-      .get("/user/1")
+      .get(`/user/${created.id}`)
       .then((res) => res.body)
       .catch((e) => {
         throw new Error(e)
       })
 
+    await deleteTestUser(`/user/${response.data.id}`)
+
     expect(response).to.be.an("object")
-    expect(response).to.have.own.property("error")
+    expect(response).to.have.own.property("error").to.be.a("boolean")
     expect(response).to.have.own.property("status")
     expect(response).to.have.own.property("data")
-    if (response.data) expect(response.data).to.be.an("object")
+    if (response?.data) expect(response.data).to.be.an("object")
   })
 
   //? GET 404 Check
@@ -83,9 +98,9 @@ describe("> USER route", () => {
       .post("/user")
       .set("Content-Type", "application/json")
       .send({
-        name: "test0",
-        password: "test0",
-        username: "test0"
+        name: String(Math.random()),
+        password: String(Math.random()),
+        username: String(Math.random())
       })
       .catch((e) => {
         throw new Error(e)
@@ -109,8 +124,8 @@ describe("> USER route", () => {
       .post("/user")
       .set("Content-Type", "application/json")
       .send({
-        name: "test",
-        password: "test"
+        name: String(Math.random()),
+        password: String(Math.random())
       })
       .catch((e) => {
         throw new Error(e)
@@ -118,7 +133,7 @@ describe("> USER route", () => {
     const error = expectedError.body
     expect(error).to.have.own.property("error").to.be.true
     expect(error).to.have.own.property("status").to.eql(400)
-    expect(error).to.have.own.property("data").to.be.an("object")
+    expect(error).to.have.own.property("data").to.be.null
     expect(error).to.have.own.property("msg").to.eql("missing params")
   })
 
@@ -128,9 +143,9 @@ describe("> USER route", () => {
       .post("/user")
       .set("Content-Type", "application/json")
       .send({
-        name: "test1",
-        password: "test1",
-        username: "test1"
+        name: String(Math.random()),
+        password: String(Math.random()),
+        username: String(Math.random())
       })
       .catch((e) => {
         throw new Error(e)
@@ -177,9 +192,9 @@ describe("> USER route", () => {
       .post("/user")
       .set("Content-Type", "application/json")
       .send({
-        name: "test2",
-        password: "test2",
-        username: "test2"
+        name: String(Math.random()),
+        password: String(Math.random()),
+        username: String(Math.random())
       })
       .catch((e) => {
         throw new Error(e)
@@ -196,9 +211,9 @@ describe("> USER route", () => {
       .put(edit_url)
       .set("Content-Type", "application/json")
       .send({
-        name: "test3",
-        password: "test3",
-        username: "test3"
+        name: String(Math.random()),
+        password: String(Math.random()),
+        username: String(Math.random())
       })
       .then((res) => res.body)
       .catch((e) => {

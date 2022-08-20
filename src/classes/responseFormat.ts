@@ -6,25 +6,32 @@ export default class Format {
   status: number
   data: User[] | User | null
 
-  constructor(error: boolean, data: User[] | User | null, msg?: string) {
+  constructor(error: boolean, data: User[] | null, msg?: string) {
+    //* default values
     this.error = error
-    this.status = 500
-    this.msg = "server error"
-    this.data = data
-    if (error == false) {
-      this.status = 200
-      this.msg = "success"
+    this.status = error ? 500 : 200
+    this.msg = error ? "server error" : "success"
+    this.data = null
+
+    //* (400) - Misssing param error
+    if (msg == "missing params") {
+      this.msg = msg
+      this.status = 400
+      return
     }
-    if (data == null) {
+
+    //* (404) - Not found error
+    if (data == null || !data[0]) {
       this.error = true
       this.status = 404
       this.msg = "not found"
       this.data = null
       return
     }
-    if (msg == "missing params") {
-      this.msg = msg
-      this.status = 400
+
+    //* Format data
+    if (data != null) {
+      this.data = data[1] ? data : data[0]
     }
   }
 }
