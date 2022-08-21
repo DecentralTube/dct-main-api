@@ -2,6 +2,8 @@
 [![Tests](https://github.com/MateoDi9z/express-template/actions/workflows/tests.yml/badge.svg)](https://github.com/MateoDi9z/express-template/actions/workflows/tests.yml)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/DecentralTube/dct-main-api/master/LICENSE)
 
+This project is meant to be the core API for DecentralTube, a 100% content-creator-owned (future blockchain based) video network.
+
 ## Features
 - Express.js API 
 - Content Provider

@@ -1,79 +1,64 @@
 import "../moduleResolver"
 import { Router, Request, Response } from "express"
-import Format from "@formats/user.format"
+import Format from "@formats/video.format"
 
 import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 const router = Router()
 
-//* @route GET /user
-//* @desc Get users
+//* @route GET /video
+//* @desc Get videos
 //* @access PRIVATE
 router.get("/", async (_req: Request, res: Response) => {
-  const data = await prisma.user.findMany()
+  const data = await prisma.video.findMany()
   res.json(new Format(false, data))
 })
 
-//* @route GET /user/:id
-//* @desc Get user
+//* @route GET /video/:id
+//* @desc Get video
 //* @access PRIVATE
 router.get("/:id", async (req: Request, res: Response) => {
   const id = parseInt(req.params.id)
 
-  const data = await prisma.user.findUnique({
+  const data = await prisma.video.findUnique({
     where: {
-      id
+      id: id
     }
   })
 
   res.json(data ? new Format(false, [data]) : new Format(true, null))
 })
 
-//* @route GET /user/username/:username
-//* @desc Get user
-//* @access PRIVATE
-router.get("/username/:username", async (req: Request, res: Response) => {
-  const username = req.params.username
-
-  const data = await prisma.user.findUnique({
-    where: {
-      username
-    }
-  })
-
-  res.json(data ? new Format(false, [data]) : new Format(true, null))
-})
-
-//* @route POST /user
-//* @desc Post new user
+//* @route POST /video
+//* @desc Post new video
 //* @access PRIVATE
 router.post("/", async (req: Request, res: Response) => {
-  const { name, username, password } = req.body
+  const { title, video, authorUsername } = req.body
 
-  if (!name || !username || !password) {
+  if (!title || !video || !authorUsername) {
     res.json(new Format(true, req.body, "missing params"))
     return
   }
 
-  const user = await prisma.user.create({
+  const newVideo = await prisma.video.create({
     data: {
-      name,
-      password,
-      username
+      title,
+      video,
+      authorUsername
     }
   })
 
-  res.json(new Format(false, [user]))
+  res.json(new Format(false, [newVideo]))
 })
 
-//* @route DELETE /user
-//* @desc Delete user
+//* @route DELETE /video
+//* @desc Delete video
 //* @access PRIVATE
 router.delete("/:id", async (req: Request, res: Response) => {
   const id = parseInt(req.params.id)
 
-  const exists = await prisma.user.findUnique({
+  const exists = await prisma.video.findUnique({
     where: {
       id: id
     }
@@ -83,23 +68,23 @@ router.delete("/:id", async (req: Request, res: Response) => {
     res.json(new Format(true, null))
   }
 
-  const user = await prisma.user.delete({
+  const video = await prisma.video.delete({
     where: {
       id: id
     }
   })
 
-  res.json(new Format(false, [user]))
+  res.json(new Format(false, [video]))
 })
 
-//* @route PUT /user
-//* @desc Update user
+//* @route PUT /video
+//* @desc Update video
 //* @access PRIVATE
 router.put("/:id", async (req: Request, res: Response) => {
   const id = parseInt(req.params.id)
-  const updatedUser = req.body
+  const updatedVideo = req.body
 
-  const exists = await prisma.user.findUnique({
+  const exists = await prisma.video.findUnique({
     where: {
       id: id
     }
@@ -109,14 +94,14 @@ router.put("/:id", async (req: Request, res: Response) => {
     res.json(new Format(true, null))
   }
 
-  const user = await prisma.user.update({
+  const video = await prisma.video.update({
     where: {
       id: id
     },
-    data: updatedUser
+    data: updatedVideo
   })
 
-  res.json(new Format(false, [user]))
+  res.json(new Format(false, [video]))
 })
 
 export default router

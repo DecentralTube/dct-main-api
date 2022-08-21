@@ -6,16 +6,52 @@ import request from "supertest"
 import createServer from "@src/server"
 const app = createServer()
 
-const route = "/" + "user"
+const route = "/" + "video"
 
-describe("> USER route", () => {
+let testUser: {
+  id: number
+  name: string
+  password: string
+  username: string
+}
+
+describe("> VIDEO route", () => {
+  //* TEST USER
+  before(async () => {
+    const res = await request(app)
+      .get("/user/username/test")
+      .then((res) => res.body)
+      .catch((e) => {
+        throw new Error(e)
+      })
+
+    if (res.data) {
+      testUser = res.data
+      return
+    }
+
+    testUser = await request(app)
+      .post("/user")
+      .set("Content-Type", "application/json")
+      .send({
+        name: "test",
+        password: "test",
+        username: "test"
+      })
+      .then((res) => res.body)
+      .then((res) => res.data)
+      .catch((e) => {
+        throw new Error(e)
+      })
+  })
+
   //* Route check
-  it(`"${route}" \t\t-> GET - returns OK`, (done) => {
+  it(`"${route}" \t-> GET - returns OK`, (done) => {
     request(app).get(route).expect(200, done)
   })
 
   //* GET
-  it(`"${route}" \t\t-> GET - responds with proper format`, async () => {
+  it(`"${route}" \t-> GET - responds with proper format`, async () => {
     const response = await request(app)
       .get(route)
       .then((res) => res.body)
@@ -49,7 +85,7 @@ describe("> USER route", () => {
   })
 
   //* Error messages
-  it(`"${route}" \t\t-> GET - responds with good error messages`, async () => {
+  it(`"${route}" \t-> GET - responds with good error messages`, async () => {
     const response = await request(app)
       .get(route)
       .then((res) => res.body)
@@ -57,7 +93,8 @@ describe("> USER route", () => {
         throw new Error(e)
       })
 
-    if (!response.data) {
+    const data = response.data
+    if (!data) {
       expect(response.error).to.be.true
       expect(response.status).equal(404 || 500)
       expect(response.data).to.be.null
@@ -68,14 +105,14 @@ describe("> USER route", () => {
   })
 
   //* GET unique
-  it(`"${route}/:id" \t-> GET - responds with one user`, async () => {
+  it(`"${route}/:id" \t-> GET - responds with one video`, async () => {
     const created = await request(app)
       .post(route)
       .set("Content-Type", "application/json")
       .send({
-        name: String(Math.random()),
-        password: String(Math.random()),
-        username: String(Math.random())
+        title: "#1",
+        video: String(Math.random()),
+        authorUsername: testUser.username
       })
       .then((res) => res.body)
       .then((body) => body.data)
@@ -90,7 +127,7 @@ describe("> USER route", () => {
         throw new Error(e)
       })
 
-    await deleteTestUser(`${route}/${response.data.id}`)
+    await deleteTestVideo(`${route}/${response.data.id}`)
 
     expect(response).to.be.an("object")
     expect(response).to.have.own.property("error").to.be.a("boolean")
@@ -114,15 +151,15 @@ describe("> USER route", () => {
     expect(response).to.have.own.property("data").to.be.null
   })
 
-  //* POST user
-  it(`"${route}" \t\t-> POST - creates a user without errors`, async () => {
+  //* POST video
+  it(`"${route}" \t-> POST - creates a video without errors`, async () => {
     const created = await request(app)
       .post(route)
       .set("Content-Type", "application/json")
       .send({
-        name: String(Math.random()),
-        password: String(Math.random()),
-        username: String(Math.random())
+        title: "#2",
+        video: String(Math.random()),
+        authorUsername: testUser.username
       })
       .then((res) => res.body)
       .catch((e) => {
@@ -136,18 +173,19 @@ describe("> USER route", () => {
     expect(created).to.have.own.property("status").to.eql(200)
     expect(created).to.have.own.property("data").to.be.an("object")
 
-    const delete_url = `${route}/${created.data.id}`
-    await deleteTestUser(delete_url)
+    const id = created.data.id
+    const delete_url = `${route}/${id}`
+    await deleteTestVideo(delete_url)
   })
 
   //* POST missing params check
-  it(`"${route}" \t\t-> POST - throws error when missing params`, async () => {
+  it(`"${route}" \t-> POST - throws error when missing params`, async () => {
     const expectedError = await request(app)
       .post(route)
       .set("Content-Type", "application/json")
       .send({
-        name: String(Math.random()),
-        password: String(Math.random())
+        title: "#3",
+        video: String(Math.random())
       })
       .then((res) => res.body)
       .catch((e) => {
@@ -160,15 +198,15 @@ describe("> USER route", () => {
     expect(expectedError).to.have.own.property("msg").to.eql("missing params")
   })
 
-  //* DELETE user
-  it(`"${route}/:id" \t-> DELETE - deletes user`, async () => {
+  //* DELETE video
+  it(`"${route}/:id" \t-> DELETE - deletes video`, async () => {
     const created = await request(app)
       .post(route)
       .set("Content-Type", "application/json")
       .send({
-        name: String(Math.random()),
-        password: String(Math.random()),
-        username: String(Math.random())
+        title: "#4",
+        video: String(Math.random()),
+        authorUsername: testUser.username
       })
       .then((res) => res.body)
       .catch((e) => {
@@ -210,17 +248,18 @@ describe("> USER route", () => {
     expect(deleted).to.have.own.property("msg").to.eql("not found")
   })
 
-  //* PUT user
-  it(`"${route}/:id" \t-> PUT - edit user without errors`, async () => {
+  //* PUT video
+  it(`"${route}/:id" \t-> PUT - edit video without errors`, async () => {
     const created = await request(app)
       .post(route)
       .set("Content-Type", "application/json")
       .send({
-        name: String(Math.random()),
-        password: String(Math.random()),
-        username: String(Math.random())
+        title: "#5",
+        video: String(Math.random()),
+        authorUsername: testUser.username
       })
       .then((res) => res.body)
+      .then((body) => body.data)
       .catch((e) => {
         throw new Error(e)
       })
@@ -229,16 +268,15 @@ describe("> USER route", () => {
       throw new Error("not created")
     }
 
-    const created_id = created.data.id
-    const edit_url = `${route}/${created_id}`
+    const edit_url = `${route}/${created.id}`
 
     const edited = await request(app)
       .put(edit_url)
       .set("Content-Type", "application/json")
       .send({
-        name: String(Math.random()),
-        password: String(Math.random()),
-        username: String(Math.random())
+        title: "#6",
+        video: String(Math.random()),
+        authorUsername: testUser.username
       })
       .then((res) => res.body)
       .catch((e) => {
@@ -249,7 +287,7 @@ describe("> USER route", () => {
     expect(edited).to.have.own.property("error").to.be.false
     expect(edited).to.have.own.property("status").to.eql(200)
     expect(edited).to.have.own.property("data").to.be.an("object")
-    expect(edited.data.id).equal(created_id)
+    expect(edited.data.id).equal(created.id)
 
     if (!edited) {
       throw new Error("not edited")
@@ -257,7 +295,7 @@ describe("> USER route", () => {
 
     const edited_id = edited.data.id
     const delete_url = `${route}/${edited_id}`
-    await deleteTestUser(delete_url)
+    await deleteTestVideo(delete_url)
   })
 
   //* PUT 404 Check
@@ -277,7 +315,7 @@ describe("> USER route", () => {
   })
 })
 
-async function deleteTestUser(url: string) {
+async function deleteTestVideo(url: string) {
   await request(app)
     .delete(url)
     .catch((e) => {

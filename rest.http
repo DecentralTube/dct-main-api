@@ -14,11 +14,13 @@ Content-Type: application/json
 
 {
   "name": "test",
-  "password": "test"
+  "password": "test",
+  "username": "test"
+
 }
 
 ### DELETE user
-DELETE http://127.0.0.1:3000/user/54
+DELETE http://127.0.0.1:3000/user/1
 
 ### EDIT user
 PUT http://127.0.0.1:3000/user/1
@@ -28,4 +30,35 @@ Content-Type: application/json
   "name": "test",
   "password": "test",
   "username": "test"
+}
+
+## VIDEO ENDPOINTS
+
+### GET videos
+GET http://127.0.0.1:3000/video
+
+### GET video
+GET http://127.0.0.1:3000/video/1
+
+### POST video
+POST http://127.0.0.1:3000/video
+Content-Type: application/json
+
+{
+  "title": "test",
+  "video": "test",
+  "authorUsername": "test"
+}
+
+### DELETE video
+DELETE http://127.0.0.1:3000/video/1
+
+### EDIT video
+PUT http://127.0.0.1:3000/video/1
+Content-Type: application/json
+
+{
+  "title": "test",
+  "video": "test",
+  "authorUsername": "test"
 }

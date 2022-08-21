@@ -11,7 +11,8 @@
     "baseUrl": ".",
     "paths": { 
       "@src/*": ["src/*"],
-      "@class/*": ["src/classes/*"]
+      "@class/*": ["src/classes/*"],
+      "@formats/*": ["src/classes/formatters/*"]
     },
     "outDir": "build"
   }
