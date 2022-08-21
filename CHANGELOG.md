@@ -1,5 +1,12 @@
 ## What's Changed
 
+## v1.0.3
+* Changed file architecture by @MateoDi9z
+* Create CRUD video API endpoint by @MateoDi9z
+* Optimized old code & test by @MateoDi9z
+* Edited Readme by @MateoDi9z
+* Added @formats to module resolver by @MateoDi9z
+
 ## v1.0.2
 
 * Prisma setup by @MateoDi9z
